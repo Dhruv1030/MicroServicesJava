@@ -7,24 +7,28 @@ A Spring Boot microservices architecture project demonstrating inter-service com
 This project consists of three main microservices:
 
 ### 🛍️ Product Service (Port: 8081)
+
 - **Database**: MongoDB
 - **Functionality**: Manages product catalog (create, retrieve products)
 - **Technology**: Spring Boot, Spring Data MongoDB
 - **Testing**: Integration tests with Testcontainers
 
 ### 📦 Order Service (Port: 8082)
+
 - **Database**: MySQL
 - **Functionality**: Handles order placement and management
 - **Technology**: Spring Boot, Spring Data JPA, WebClient for inter-service communication
 - **Dependencies**: Communicates with Inventory Service for stock verification
 
 ### 📊 Inventory Service (Port: 8083)
+
 - **Database**: MySQL
 - **Functionality**: Manages product inventory and stock levels
 - **Technology**: Spring Boot, Spring Data JPA
 - **Features**: Stock verification API for multiple products
 
 ### 🔍 Discovery Server (Port: 8761)
+
 - **Technology**: Spring Cloud Netflix Eureka
 - **Functionality**: Service registry and discovery
 
@@ -33,7 +37,7 @@ This project consists of three main microservices:
 - **Framework**: Spring Boot 3.5.6
 - **Java Version**: 17
 - **Build Tool**: Maven
-- **Databases**: 
+- **Databases**:
   - MongoDB (Product Service)
   - MySQL (Order & Inventory Services)
 - **Testing**: JUnit 5, Testcontainers
@@ -45,7 +49,7 @@ This project consists of three main microservices:
 ```
 microservices-new/
 ├── product-service/          # Product management service
-├── order-service/            # Order processing service  
+├── order-service/            # Order processing service
 ├── inventory-service/        # Inventory management service
 ├── discovery-server/         # Eureka service registry
 ├── pom.xml                  # Parent POM
@@ -55,6 +59,7 @@ microservices-new/
 ## Getting Started
 
 ### Prerequisites
+
 - Java 17+
 - Maven 3.6+
 - MongoDB (for Product Service)
@@ -64,35 +69,41 @@ microservices-new/
 ### Database Setup
 
 #### MySQL Setup
+
 ```sql
 CREATE DATABASE `order-service`;
 CREATE DATABASE `inventory-service`;
 ```
 
 #### MongoDB Setup
+
 - Default connection: `mongodb://localhost:27017/product-service`
 
 ### Running the Services
 
 1. **Start Discovery Server** (Optional but recommended)
+
 ```bash
 cd discovery-server
 mvn spring-boot:run
 ```
 
 2. **Start Product Service**
+
 ```bash
-cd product-service  
+cd product-service
 mvn spring-boot:run
 ```
 
 3. **Start Inventory Service**
+
 ```bash
 cd inventory-service
 mvn spring-boot:run
 ```
 
 4. **Start Order Service**
+
 ```bash
 cd order-service
 mvn spring-boot:run
@@ -101,19 +112,23 @@ mvn spring-boot:run
 ### API Endpoints
 
 #### Product Service (http://localhost:8081)
+
 - `POST /api/product` - Create a new product
 - `GET /api/product` - Get all products
 
 #### Inventory Service (http://localhost:8083)
+
 - `GET /api/inventory?skuCode=product1&skuCode=product2` - Check stock for products
 
 #### Order Service (http://localhost:8082)
+
 - `POST /api/order` - Place a new order
 - `GET /actuator/health` - Health check
 
 ### Sample API Calls
 
 #### Create Product
+
 ```bash
 curl -X POST http://localhost:8081/api/product \
   -H "Content-Type: application/json" \
@@ -125,6 +140,7 @@ curl -X POST http://localhost:8081/api/product \
 ```
 
 #### Place Order
+
 ```bash
 curl -X POST http://localhost:8082/api/order \
   -H "Content-Type: application/json" \
@@ -138,6 +154,7 @@ curl -X POST http://localhost:8082/api/order \
 ```
 
 #### Check Inventory
+
 ```bash
 curl "http://localhost:8083/api/inventory?skuCode=iphone%2013"
 ```
@@ -145,11 +162,13 @@ curl "http://localhost:8083/api/inventory?skuCode=iphone%2013"
 ## Testing
 
 ### Run Unit Tests
+
 ```bash
 mvn test
 ```
 
 ### Run Integration Tests
+
 ```bash
 mvn verify
 ```
