@@ -54,6 +54,16 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
             <version>4.3.0</version>
         </dependency>
+        
+        <!-- Zipkin for distributed tracing -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-brave</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.zipkin.reporter2</groupId>
+            <artifactId>zipkin-reporter-brave</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

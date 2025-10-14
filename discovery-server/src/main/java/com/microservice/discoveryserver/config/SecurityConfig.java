@@ -1,6 +1,5 @@
 package com.microservice.discoveryserver.config;
 
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,9 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.config.Customizer;
 
-
-
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -27,30 +23,33 @@ public class SecurityConfig {
     private String username;
     @Value("${eureka.password}")
     private String password;
-    
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth
-                .anyRequest().authenticated()
-            )
-            .httpBasic(Customizer.withDefaults());
-        
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/eureka/peerreplication/**").permitAll()  // Allow peer replication
+                        .requestMatchers("/eureka/apps/**").permitAll()            // Allow service registration
+                        .requestMatchers("/actuator/**").permitAll()               // Allow actuator endpoints
+                        .anyRequest().authenticated()                              // Secure dashboard
+                )
+                .httpBasic(Customizer.withDefaults());
+
         return http.build();
     }
-    
+
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User.builder()
-            .username(username)
-            .password(passwordEncoder().encode(password))
-            .roles("USER")
-            .build();
-        
+                .username(username)
+                .password(passwordEncoder().encode(password))
+                .roles("USER")
+                .build();
+
         return new InMemoryUserDetailsManager(user);
     }
-    
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
